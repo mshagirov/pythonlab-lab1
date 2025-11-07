@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from banner import banner
+from banner import make_banner
 
 def main():
-    print(banner)
+    print(make_banner())
     print("Hello there!")
 
     # check if it is DNA

@@ -1,23 +1,4 @@
-# https://www.101computing.net/dna-sequence-analysis-python-challenge/
 #DNA Sequence Analysis - www.101computing.net/dna-sequence-analysis-python-challenge/
-print("""
-O---o
- O-o
-  O
- o-O
-o---O
-O---o
- O-o
-  O     DNA Sequence Analysis
- o-O
-o---O
-O---o
- O-o
-  O
- o-O
-o---O      
-
-""")
 
 def count_nucleotides(dna_sequence):
    """Count the occurrences of each nucleotide in the DNA sequence."""
