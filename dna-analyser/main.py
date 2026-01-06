@@ -2,45 +2,51 @@
 
 import sys
 import os
-# from pathlib import Path
+from pathlib import Path
 
 from banner import display_banner
-from dna_tools import *
+from reader import *
+from dnatools import *
 
 TEXT_WIDTH = os.get_terminal_size().columns
 
 def main(*input_files):
     display_banner()
 
-    print('\nChecking input files:')    
+    print("\nAnalysing sequences:")
+
+    border = f'+{"-"*20}+{"-"*6}+{"-"*8}+{"-"*8}+{"-"*8}+{"-"*8}+{"-"*8}+'
+
+    print(border)
+    print(f'┊{"Sequence File":^20}┊{"DNA?":^6}┊{"#bases":^8}┊{"ssMW kDa":^8}┊{"GC%":^8}┊{"AT/GC":^8}┊{"Tm C°":^8}┊')
+    print(border)
+
     sequences = read_seq_files(input_files)
 
-    print("\nAnalysing sequences:")
     for seq in sequences:
-        print(f"\n🧬 Sequence: {seq}")
-        
-        print(f'  - length: {len(sequences[seq])} bp')
+        print(f'┊{Path(seq).name:^20}', end='')
+        if not is_dna(sequences[seq]):
+            print('┊  ❌  ┊')
+            print(border)
+            continue
+        else:
+            print('┊  🧬  ', end='')
+        print(f'┊{len(sequences[seq]):^8}', end='')
 
         bases = count_bases(sequences[seq])
-        print(f'  - count : {bases}')
+        print(f'┊{ss_wight(bases)/1000:^8.2f}', end='')
 
-        print(f'  - weight: {calc_wight_ss(bases):.1f} Da (single strand)')
+        GC_to_total = f'{gc_percent(bases):.2f}' + '%'
+        print(f"┊{GC_to_total:^8}", end='')
 
-        print(f"  - GC content: {gc_content(bases):4.2f}%")
+        AT_GC_ratio = f'{at_to_gc_ratio(bases):.2f}'
+        print(f"┊{AT_GC_ratio:^8}", end='')
 
-        print(f"  - AT:GC ratio: {at_to_gc_ratio(bases):5.2f}")
+        print(f'┊{wallace_rule_melting_temperature(bases):^8}',end='')
+        print("┊")
+        print(border)
 
-        print("")
-        plasmid = sequences[seq][:TEXT_WIDTH]
-        
-        print(plasmid)
-        print('|'*len(plasmid))
-        print(complementary_strand(plasmid))
-
-        print('\nRNA:')
-        print(transcribe_to_rna(plasmid))
-
-        print('-'*TEXT_WIDTH)
+    #print(border)
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

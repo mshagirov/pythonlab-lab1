@@ -1,0 +1,3 @@
+# T3 promoter; Forward
+
+GCAATTAACCCTCACTAAAGG
