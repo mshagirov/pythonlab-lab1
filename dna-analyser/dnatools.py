@@ -1,3 +1,7 @@
+'''
+DNA sequence analysis tools
+'''
+
 def is_dna(seq):
     """Check if sequence contains only A, T, G, C"""
     return set('ATGC') == set(seq)

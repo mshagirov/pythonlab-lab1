@@ -1,5 +1,5 @@
 '''
-Functions for reading and cleaning input serquences from text files
+Functions for reading and cleaning DNA sequences from input text files
 '''
 
 def read_file(file_path):
