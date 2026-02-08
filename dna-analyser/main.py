@@ -15,22 +15,23 @@ def main(*input_files):
 
     print("\nAnalysing sequences:")
 
-    border = f'+{"-"*20}+{"-"*6}+{"-"*8}+{"-"*8}+{"-"*8}+{"-"*8}+{"-"*8}+'
+    border = f'+{"-"*20}+{"-"*8}+{"-"*8}+{"-"*8}+{"-"*8}+{"-"*8}+'
 
     print(border)
-    print(f'┊{"Sequence File":^20}┊{"DNA?":^6}┊{"#bases":^8}┊{"ssMW kDa":^8}┊{"GC%":^8}┊{"AT/GC":^8}┊{"Tm C°":^8}┊')
+    print(f'┊{"Sequence File":^20}┊{"#bases":^8}┊{"ssMW kDa":^8}┊{"GC%":^8}┊{"AT/GC":^8}┊{"Tm C°":^8}┊')
     print(border)
 
     sequences = read_seq_files(input_files)
 
+    not_dna = []
+
     for seq in sequences:
-        print(f'┊{Path(seq).name:^20}', end='')
         if not is_dna(sequences[seq]):
-            print('┊  ❌  ┊')
-            print(border)
+            not_dna.append(Path(seq).name)
             continue
-        else:
-            print('┊  🧬  ', end='')
+
+        print(f'┊{Path(seq).name:^20}', end='')
+
         print(f'┊{len(sequences[seq]):^8}', end='')
 
         bases = count_bases(sequences[seq])
@@ -45,6 +46,11 @@ def main(*input_files):
         print(f'┊{wallace_rule_melting_temperature(bases):^8}',end='')
         print("┊")
         print(border)
+
+    if not_dna:
+        print("\nSkipped:")
+    for seq in not_dna:
+        print(f'- {Path(seq).name:^20}  ❌  Not a DNA sequence')
 
     #print(border)
 
